@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Personal page{% endblock %}
+
+{% block content %}
+<h2>Change data</h2>
+<form method="post">
+  {% csrf_token %}
+  <label>Username</label>
+  <p>{{ form.username }}</p>
+  <label>Email</label>
+  <p>{{ form.email }}</p>
+  <button type="submit">Change</button>
+</form>
+{% endblock %}
