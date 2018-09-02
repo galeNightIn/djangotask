@@ -1,4 +1,4 @@
-# users/forms.py
+from django.conf import settings
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from customuser.models import CustomUser
@@ -6,7 +6,7 @@ from customuser.models import CustomUser
 
 class RegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True)
-    passport_img = forms.ImageField(required=True)
+    passport_img = forms.FileField()
 
     class Meta:
         model = CustomUser
@@ -15,8 +15,6 @@ class RegistrationForm(UserCreationForm):
             'first_name',
             'last_name',
             'email',
-            'passport_img',
-            'phone_number',
             'password1',
             'password2'
         )
@@ -26,11 +24,16 @@ class RegistrationForm(UserCreationForm):
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
         user.email = self.cleaned_data['email']
-        user.password_img = self.changed_data['passport_img']
-        user.phone_number = self.changed_data['phone_number']
+
+        user.save()
+        user.create_profile()
+        user.profile_img = self.cleaned_data.get('passport_img')
+        user.profile.save()
 
         if commit:
             user.save()
+
+        return user
 
 
 class EditUserForm(UserChangeForm):

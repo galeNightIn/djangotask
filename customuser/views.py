@@ -14,10 +14,8 @@ def register(request):
                                     password=form.cleaned_data['password1'],
                                     )
             login(request, new_user)
-            return redirect(reverse('home'))
-        else:
-            print("Deam")
-            return redirect(reverse('home'))
+        return redirect(reverse('home'))
+
     else:
         form = RegistrationForm()
 
